@@ -1,0 +1,142 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Contact Us | Saffron & Salt" description="Get in touch with us for inquiries, private events, or feedback.">
+  <main class="pt-32 pb-24" data-ps="src/pages/contact.astro:5wycxf">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8" data-ps="src/pages/contact.astro:uoopee">
+      <div class="text-center mb-16" data-ps="src/pages/contact.astro:uoopef">
+        <h1 class="text-4xl md:text-5xl font-serif text-stone-900 mb-4" data-ps="src/pages/contact.astro:xwwf0s">Contact Us</h1>
+        <p class="text-stone-600 max-w-2xl mx-auto text-lg" data-ps="src/pages/contact.astro:wmga16">
+          Have a question or want to book a private event? Send us a message and we'll get back to you as soon as possible.
+        </p>
+      </div>
+
+      <div class="bg-stone-50 p-8 md:p-12 rounded-2xl border border-stone-200 shadow-sm" data-ps="src/pages/contact.astro:lx8n1r">
+        <div id="contact-status" class="hidden mb-6 px-4 py-3 rounded-lg" data-ps="src/pages/contact.astro:lx8n1i"></div>
+        <form 
+          id="contact-form"
+          class="space-y-6"
+        >
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6" data-ps="src/pages/contact.astro:lx8n1q">
+            <div data-ps="src/pages/contact.astro:lx8n1p">
+              <label for="name" class="block text-sm font-medium text-stone-700 mb-1">Full Name</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                required
+                placeholder="John Doe"
+                class="w-full px-4 py-3 rounded-lg border border-stone-300 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all bg-white"
+              />
+            </div>
+            <div data-ps="src/pages/contact.astro:lx8n1o">
+              <label for="email" class="block text-sm font-medium text-stone-700 mb-1">Email Address</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                placeholder="john@example.com"
+                class="w-full px-4 py-3 rounded-lg border border-stone-300 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all bg-white"
+              />
+            </div>
+          </div>
+
+          <div data-ps="src/pages/contact.astro:lx8n1n">
+            <label for="subject" class="block text-sm font-medium text-stone-700 mb-1">Subject</label>
+            <select
+              id="subject"
+              name="subject"
+              class="w-full px-4 py-3 rounded-lg border border-stone-300 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all bg-white"
+            >
+              <option value="general">General Inquiry</option>
+              <option value="event">Private Event</option>
+              <option value="feedback">Feedback</option>
+              <option value="press">Press Inquiry</option>
+            </select>
+          </div>
+
+          <div data-ps="src/pages/contact.astro:lx8n1m">
+            <label for="message" class="block text-sm font-medium text-stone-700 mb-1">Message</label>
+            <textarea
+              id="message"
+              name="message"
+              rows="5"
+              required
+              placeholder="Your message here..."
+              class="w-full px-4 py-3 rounded-lg border border-stone-300 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all bg-white"
+            ></textarea>
+          </div>
+
+          <button
+            id="contact-submit"
+            type="submit"
+            class="w-full bg-stone-900 text-stone-50 py-4 px-8 rounded-lg font-medium hover:bg-stone-800 transition-colors duration-200 text-lg"
+           data-ps="src/pages/contact.astro:qxoibz">
+            Send Message
+          </button>
+        </form>
+      </div>
+
+      <script>
+        const form = document.getElementById('contact-form') as HTMLFormElement;
+        const status = document.getElementById('contact-status') as HTMLDivElement;
+        const submitBtn = document.getElementById('contact-submit') as HTMLButtonElement;
+
+        form?.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          submitBtn.disabled = true;
+          submitBtn.textContent = 'Sending...';
+
+          const formData = new FormData(form);
+
+          try {
+            const response = await fetch('/psapi-internal-v1/forms/submit', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                name: formData.get('name'),
+                email: formData.get('email'),
+                subject: formData.get('subject'),
+                message: formData.get('message'),
+              }),
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+              status.className = 'mb-6 px-4 py-3 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700';
+              status.textContent = 'Thank you! Your message has been sent.';
+              form.reset();
+            } else {
+              throw new Error(result.error || 'Failed to send');
+            }
+          } catch (err) {
+            status.className = 'mb-6 px-4 py-3 rounded-lg bg-red-50 border border-red-200 text-red-700';
+            status.textContent = err instanceof Error ? err.message : 'Failed to send. Please try again.';
+          } finally {
+            status.classList.remove('hidden');
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Send Message';
+          }
+        });
+      </script>
+      
+      <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 text-center" data-ps="src/pages/contact.astro:lx8n1l">
+        <div data-ps="src/pages/contact.astro:lx8n1k">
+          <h3 class="font-serif text-xl text-stone-900 mb-2" data-ps="src/pages/contact.astro:4k2kll">Call Us</h3>
+          <p class="text-stone-600" data-ps="src/pages/contact.astro:wmga0k">(555) 123-4567</p>
+        </div>
+        <div data-ps="src/pages/contact.astro:lx8n1j">
+          <h3 class="font-serif text-xl text-stone-900 mb-2" data-ps="src/pages/contact.astro:4k2klm">Visit Us</h3>
+          <p class="text-stone-600" data-ps="src/pages/contact.astro:wmga0j">123 Harvest Lane<br/>Vineyard Valley, CA 90210</p>
+        </div>
+        <div data-ps="src/pages/contact.astro:lx8n1i">
+          <h3 class="font-serif text-xl text-stone-900 mb-2" data-ps="src/pages/contact.astro:4k2kln">Email Us</h3>
+          <p class="text-stone-600" data-ps="src/pages/contact.astro:wmga0i">hello@saffronsalt.com</p>
+        </div>
+      </div>
+    </div>
+  </main>
+</BaseLayout>

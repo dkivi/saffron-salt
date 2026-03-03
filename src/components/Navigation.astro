@@ -1,0 +1,111 @@
+---
+// Navigation - working mobile menu + scroll glassmorphism
+import { SITE } from '@/config/site';
+
+export interface Props {
+  logo?: string;
+}
+
+const { logo = SITE.name } = Astro.props;
+---
+
+<header id="navbar" class="sticky top-0 z-50 bg-stone-950 backdrop-blur-lg border-b border-stone-800" data-ps="src/components/Navigation.astro:1">
+  <nav class="py-4 md:py-6" data-ps="src/components/Navigation.astro:2">
+    <div class="max-w-7xl mx-auto px-6 flex justify-between items-center" data-ps="src/components/Navigation.astro:3">
+      <a href="/" class="flex items-center gap-2 text-2xl md:text-3xl font-bold text-stone-50 no-underline hover:text-amber-500 transition-colors tracking-tighter" data-ps="src/components/Navigation.astro:4">
+        <svg class="w-8 h-8 md:w-10 md:h-10 text-amber-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+          <path d="M12 8V12" stroke-width="1.5" />
+          <circle cx="12" cy="12" r="3" stroke-width="1.5" />
+        </svg>
+        <span data-ps="src/components/Navigation.astro:i2om6i">{logo}</span>
+      </a>
+
+      <div class="flex items-center gap-8" data-ps="src/components/Navigation.astro:5">
+        <div class="hidden md:flex gap-10 items-center" data-ps="src/components/Navigation.astro:6">
+          <a href="/#story" class="text-stone-300 font-bold uppercase tracking-widest text-xs no-underline hover:text-amber-500 transition-colors" data-ps="src/components/Navigation.astro:7">Our Story</a>
+          <a href="/#menu" class="text-stone-300 font-bold uppercase tracking-widest text-xs no-underline hover:text-amber-500 transition-colors" data-ps="src/components/Navigation.astro:8">Menu</a>
+          <a href="/desserts" class="text-stone-300 font-bold uppercase tracking-widest text-xs no-underline hover:text-amber-500 transition-colors" data-ps="src/components/Navigation.astro:8a">Desserts</a>
+          <a href="/contact" class="text-stone-300 font-bold uppercase tracking-widest text-xs no-underline hover:text-amber-500 transition-colors" data-ps="src/components/Navigation.astro:8b">Contact</a>
+          <a href="/#gallery" class="text-stone-300 font-bold uppercase tracking-widest text-xs no-underline hover:text-amber-500 transition-colors" data-ps="src/components/Navigation.astro:9">Gallery</a>
+          <a href="/#reservations" class="px-6 py-2 bg-amber-700 text-white font-bold uppercase tracking-widest text-xs rounded-full hover:bg-amber-800 transition-all" data-ps="src/components/Navigation.astro:10">Reservations</a>
+        </div>
+
+        <button
+          id="mobile-menu-button"
+          type="button"
+          class="md:hidden p-2 text-stone-300 hover:text-amber-500 transition-colors"
+          aria-label="Toggle menu"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+         data-ps="src/components/Navigation.astro:11">
+          <svg id="menu-icon-open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <svg id="menu-icon-close" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <div
+    id="mobile-menu"
+    class="hidden md:hidden overflow-hidden bg-stone-950 border-t border-stone-800"
+    role="navigation"
+    aria-label="Mobile navigation"
+   data-ps="src/components/Navigation.astro:12">
+    <nav class="flex flex-col py-8 px-6 gap-6" data-ps="src/components/Navigation.astro:m59h36">
+      <a href="/#story" class="text-stone-300 font-bold uppercase tracking-widest text-lg no-underline hover:text-amber-500 transition-colors" data-ps="src/components/Navigation.astro:13">Our Story</a>
+      <a href="/#menu" class="text-stone-300 font-bold uppercase tracking-widest text-lg no-underline hover:text-amber-500 transition-colors" data-ps="src/components/Navigation.astro:14">Menu</a>
+      <a href="/desserts" class="text-stone-300 font-bold uppercase tracking-widest text-lg no-underline hover:text-amber-500 transition-colors" data-ps="src/components/Navigation.astro:14a">Desserts</a>
+      <a href="/contact" class="text-stone-300 font-bold uppercase tracking-widest text-lg no-underline hover:text-amber-500 transition-colors" data-ps="src/components/Navigation.astro:14b">Contact</a>
+      <a href="/#gallery" class="text-stone-300 font-bold uppercase tracking-widest text-lg no-underline hover:text-amber-500 transition-colors" data-ps="src/components/Navigation.astro:15">Gallery</a>
+      <a href="/#reservations" class="text-amber-400 font-bold uppercase tracking-widest text-lg no-underline hover:text-white transition-colors" data-ps="src/components/Navigation.astro:16">Reservations</a>
+    </nav>
+  </div>
+</header>
+
+<script is:inline>
+  const navbar = document.getElementById('navbar');
+  const mobileMenuButton = document.getElementById('mobile-menu-button');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const menuIconOpen = document.getElementById('menu-icon-open');
+  const menuIconClose = document.getElementById('menu-icon-close');
+
+  function updateNavbar() {
+    if (window.scrollY > 50) {
+      navbar?.classList.add('md:bg-stone-950/90');
+    } else {
+      navbar?.classList.remove('md:bg-stone-950/90');
+    }
+  }
+  window.addEventListener('scroll', updateNavbar, { passive: true });
+  updateNavbar();
+
+  function toggleMenu() {
+    const isOpen = !mobileMenu?.classList.contains('hidden');
+    if (isOpen) {
+      mobileMenu?.classList.add('hidden');
+      menuIconOpen?.classList.remove('hidden');
+      menuIconClose?.classList.add('hidden');
+      mobileMenuButton?.setAttribute('aria-expanded', 'false');
+    } else {
+      mobileMenu?.classList.remove('hidden');
+      menuIconOpen?.classList.add('hidden');
+      menuIconClose?.classList.remove('hidden');
+      mobileMenuButton?.setAttribute('aria-expanded', 'true');
+    }
+  }
+
+  mobileMenuButton?.addEventListener('click', toggleMenu);
+  mobileMenu?.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      mobileMenu?.classList.add('hidden');
+      menuIconOpen?.classList.remove('hidden');
+      menuIconClose?.classList.add('hidden');
+      mobileMenuButton?.setAttribute('aria-expanded', 'false');
+    });
+  });
+</script>
